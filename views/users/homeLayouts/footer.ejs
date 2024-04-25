@@ -1,0 +1,212 @@
+
+<!-- footer section -->
+
+  <!-- footer section -->
+
+  <script type="text/javascript" src="/asset3/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/asset3/js/bootstrap.js"></script>
+  <script>
+    function formatDate(dateString) {
+        if (!dateString) return ''; // Xử lý trường hợp dateString không tồn tại
+    
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Lưu ý: getMonth() trả về index bắt đầu từ 0
+        const year = date.getFullYear();
+    
+        return `${day}/${month}/${year}`;
+    }
+    </script>
+    
+  <script>
+    // This example adds a marker to indicate the position of Bondi Beach in Sydney,
+    // Australia.
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 11,
+        center: {
+          lat: 40.645037,
+          lng: -73.880224
+        }
+      });
+
+      var image = "images/maps-and-flags.png";
+      var beachMarker = new google.maps.Marker({
+        position: {
+          lat: 40.645037,
+          lng: -73.880224
+        },
+        map: map,
+        icon: image
+      });
+    }
+  </script>
+  <!-- google map js -->
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8eaHt9Dh5H57Zh0xVTqxVdBFCvFMqFjQ&callback=initMap">
+  </script>
+  <!-- end google map js -->
+  <script>
+  $(document).ready(function() {
+    $('#academySelect').change(function() {
+        var academyId = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: '/academy/info/' + academyId,
+            success: function(response) {
+                // Định dạng lại ngày tháng
+                var startDate = new Date(response.startDate);
+                var endDate = new Date(response.endDate);
+                var formattedStartDate = startDate.toISOString().slice(0, 10);
+                var formattedEndDate = endDate.toISOString().slice(0, 10);
+
+                // Hiển thị ngày tháng đã định dạng trên giao diện
+                $('#startDate').text(formattedStartDate);
+                $('#endDate').text(formattedEndDate);
+                $('#status').text(response.status);
+
+                if (response.status === "Active") {
+                    $('#addBlogButton').show();
+                    $('#academyId').val(academyId); // Hiển thị nút "Add new blog"
+                } else {
+                    $('#addBlogButton').hide(); // Ẩn nút "Add new blog"
+                }
+
+                $('#addBlogButton').click(function() {
+                  // Lấy giá trị của option đã chọn từ dropdown
+                var academyId = $('#academySelect').val();
+                // Chuyển hướng đến trang thêm blog với id của academy đã chọn
+                window.location.href = '/addBlog/' + academyId;
+                });
+
+                // Gọi hàm để lấy các blog theo academyId
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    $('#imageInput').change(function(event) {
+    var input = event.target;
+    var reader = new FileReader();
+
+      reader.onload = function() {
+          var dataURL = reader.result;
+          $('#selectedImage').attr('src', dataURL).show();
+        
+          // Xóa hình ảnh cũ nếu có
+          $('#oldImage').remove();
+      };
+
+    reader.readAsDataURL(input.files[0]);
+});
+    
+  });
+  </script>
+
+<script>
+  // Xử lý sự kiện thay đổi của input file
+  document.getElementById("fileInput").onchange = function(event) {
+      const input = event.target;
+      const oldFileInfo = document.getElementById("fileInfo");
+
+      // Ẩn thông tin về các tệp cũ
+      oldFileInfo.style.display = "none";
+
+      // Hiển thị thông tin về các tệp mới
+      const newFilesDiv = document.getElementById("newFiles");
+      newFilesDiv.innerHTML = ""; // Xóa nội dung cũ của div
+      const files = input.files;
+
+      if (files.length > 0) {
+          for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+              const fileDiv = document.createElement("div");
+
+              const fileNameParagraph = document.createElement("p");
+              fileNameParagraph.innerHTML = "<strong>Name:</strong> " + file.name;
+              fileDiv.appendChild(fileNameParagraph);
+
+              const fileTypeParagraph = document.createElement("p");
+              fileTypeParagraph.innerHTML = "<strong>Type:</strong> " + file.type;
+              fileDiv.appendChild(fileTypeParagraph);
+
+              // Hiển thị hình ảnh đại diện phù hợp với loại tệp
+              const fileImage = document.createElement("img");
+              fileImage.style.maxWidth = "80px";
+              fileImage.style.maxHeight = "80px";
+              if (file.type.startsWith("image/")) {
+                  fileImage.src = URL.createObjectURL(file);
+              } else if (file.type === "application/msword" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                  fileImage.src = "/image/word-icon.png";
+              } else {
+                  fileImage.src = "/image/default_icon.png";
+              }
+              fileDiv.appendChild(fileImage);
+
+              newFilesDiv.appendChild(fileDiv);
+          }
+      } 
+  };
+</script>
+<script>
+  // JavaScript code
+  document.getElementById('fileInput1').addEventListener('change', function(event) {
+      var file = event.target.files[0]; // Get the selected file
+      if (file) {
+          var fileName = file.name;
+          var fileType = file.type;
+
+          // Determine appropriate image based on file type
+          var fileImageSrc = '';
+          switch(fileType) {
+              case 'image/jpeg':
+              case 'image/png':
+              case 'image/gif':
+                  fileImageSrc = URL.createObjectURL(file);
+                  break;
+              case 'application/msword':
+              case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                  fileImageSrc = '/image/word-icon.png'; // Path to Word icon
+                  break;
+              // Add cases for other file types as needed
+              default:
+                  fileImageSrc = 'default_icon.png'; // Path to default icon for other file types
+                  break;
+          }
+
+          // Display file info
+          document.getElementById('fileName').textContent = fileName;
+          document.getElementById('fileType').textContent = fileType;
+
+          // Display image
+          document.getElementById('fileImage').src = fileImageSrc;
+
+          // Show the fileDetails div
+          document.getElementById('fileDetails').style.display = 'block';
+      }
+  });
+</script>
+
+  <script>
+    function openNav() {
+      document.getElementById("myNav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.width = "0%";
+    }
+  </script>
+   
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bao gồm thư viện jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bao gồm các tệp JavaScript của Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>

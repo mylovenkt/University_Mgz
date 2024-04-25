@@ -1,0 +1,131 @@
+<%- include('homeLayouts/header.ejs') %>
+
+<div class="container my-5">
+  <% if (message) { %>
+    <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+      <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>
+        <%= message.message %>
+      </strong>
+    </div>
+  <% } %>
+      <div class="row">
+        <div class="col col-lg-4">
+          <div class="container my-4">
+            <div class="blog-card">
+              <% if(user && user.role !== 'manager') { %>
+                <div class="row px-3 mt-2">
+                  <h3>Faculty</h3>
+                  <div class="row">
+                    <div class="col">
+                      <p>name:</p>
+                    </div>
+                    <div class="col">
+                      <span>
+                        <%= user.faculty.name %>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              <% } %>
+                
+              
+              <% if (academy) { %>
+                  <div class="row px-3">
+                    <h3>Academy</h3>
+                    <div class="row">
+                      <div class="row">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="academy"
+                        onchange="location = this.value">
+                        <option value="">Select Academy</option>
+                        <% academy.forEach(function(opts) { %>
+                          <option value="/blogList/<%= opts._id %>">
+                            <%= opts.name %>
+                          </option>
+                          <% }); %>
+                      </select>
+                      </div>
+                      <div class="col">
+                        <p>name: </p>
+                      </div>
+                      <div class="col">
+                        <% if (selectedAcademy) { %>
+                          <span>
+                            <%= selectedAcademy.name %>
+                          </span>
+                          <% } %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <p>
+                          start Date:
+                        </p>
+                      </div>
+                      <div class="col">
+                        <% if (selectedAcademy) { %>
+                          <span>
+                            <%= selectedAcademy.startDate %>
+                          </span>
+                          <% } %>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <p>
+                          End Date:
+                        </p>
+                      </div>
+                      <div class="col">
+                        <% if (selectedAcademy) { %>
+                          <span>
+                            <%= selectedAcademy.endDate %>
+                          </span>
+                          <% } %>
+                      </div>
+                    </div>
+                    <div class="row text-center">
+                      <% if (selectedAcademy) { %>
+                        <% if(selectedAcademy.status === "Active") { %>
+                          <div class="d-flex justify-content-center">
+                            <span class="badge square-pill bg-success p-2"><%= selectedAcademy.status %></span>
+                          </div>
+                        <% } else if(selectedAcademy.status === 'Unactive') { %>
+                          <div class="d-flex justify-content-center">
+                            <span class="badge square-pill bg-danger p-2"><%= selectedAcademy.status %></span>
+                          </div>
+                        <% } %>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="row text-center my-4 ">
+                    <% if(selectedAcademy && selectedAcademy.status==='Active' && user.role==='student' ) { %>
+                      <a href="/addBlog/<%= selectedAcademy._id %>">
+                        <button class="btn btn-outline-secondary">Add new blog</button>
+                      </a>
+                      <% } %>
+                  </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="container ">
+            <%- include('blogList') %>
+          </div>
+        </div>
+        
+      </div>
+</div>
+  
+
+      
+
+
+
+
+
+      <%- include('homeLayouts/footer.ejs') %>

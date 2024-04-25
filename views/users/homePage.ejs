@@ -1,0 +1,123 @@
+<%- include('homeLayouts/header.ejs') %>    
+    
+  <div class="container my-5">
+    <div class="row text-center">
+      <% if(user) { %>
+        <h1 class="text-capitalize">Wecome to Magazine, <span><%= user.username %></span></h1>
+      <% } %>
+       
+    </div>
+    <div class="row text-center">
+      <% if (message) { %>
+        <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <strong><%= message.message %></strong>
+        </div>
+      <% } %>
+    </div>
+    
+    <% if(user.role !== 'student' && user.role !== 'guest') { %>
+      <% if(user.role !== 'manager') { %>
+      <form action="/updateChart" method="Post">
+        <h4>User Contribution Search</h4>
+        <input type="email" id="email" name="email" placeholder="Enter Student Email">
+        <button type="submit">Search</button>
+      </form>
+      <% } %>
+    <div class="col grid-margin stretch-card">
+      <div class="card mt-4">
+        <div class="card-body">
+            <% if(text) { %>
+          <h4 class="card-title"><%= text %></h4> 
+          <% if(stu) { %>
+          <span>Student name: <%= stu.username %></span>
+          <% } %>
+              <% } %>
+          
+          <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <% } else { %>
+      <% if(user.role === 'guest') { %>
+        <div class="row m-3">
+          <h3>The Blogs Guest Can See: </h3>
+        </div>
+      <% } %>
+      <div class="row mt-4">
+          <% 
+            let count = 0;
+            if(blogs && blogs.length > 0) {
+            blogs.forEach(blog => { 
+              if (count < 8) {
+                // Tạo một đối tượng Date từ trường createdAt của blog
+                const createdAtDate = new Date(blog.createdAt);
+                // Format ngày tháng năm và giờ
+                const formattedCreatedAt = createdAtDate.toLocaleString('vi-VN', {
+                  day: 'numeric',
+                  month: 'numeric',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  hour12: false // Sử dụng định dạng 24 giờ
+                });
+          %>
+            <div class="card m-3" style="width: 18rem;">
+              <img src="/<%= blog.backgroundImage %>" class="card-img-top" alt="<%= blog.backgroundImage %>">
+              <div style="position: absolute; top: 10px; right: 0;">
+                <% if(blog.status === "pending") { %>
+                    <span class="badge square-pill bg-primary"><%= blog.status %></span>
+                <% } else if(blog.status === 'publish') { %>
+                    <span class="badge square-pill bg-success"><%= blog.status %></span>
+                <% } else if(blog.status === 'rejected') { %>
+                    <span class="badge square-pill bg-danger"><%= blog.status %></span>
+                <% } %>
+            </div>
+              <div class="card-body">
+                <h5 class="card-title text-capitalize"><%= blog.title %></h5>
+                <p class="card-text"><%= blog.content %></p>
+                <span class="blog-card-last-update fs-6">Created at: <%= formattedCreatedAt %></span>
+              </div>
+              <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Academy: <%= blog.academy.name %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-monospace">Faculty: <%= blog.faculty.name %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="text-capitalize fs-6">Create by: <%= blog.user.username %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/<%= blog.user.image %>" class="rounded-circle img-thumbnail" width="46" alt="">
+                        </li>
+                       
+              </ul>
+              
+              <a href="/blogDetails/<%= blog.id %>" class="btn btn-outline-primary m-2">Read More</a>
+            </div>
+          <%
+                  count++;
+                }
+              });
+            }
+          %>
+      </div>
+    <% } %>
+
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tham số chartConfig từ server-side render
+        const chartConfig = JSON.parse(`<%- JSON.stringify(chartConfig) %>`);
+        
+        // Vẽ biểu đồ bằng Chart.js
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, chartConfig);
+    });
+</script>
+ 
+
+
+  <%- include('homeLayouts/footer.ejs') %>

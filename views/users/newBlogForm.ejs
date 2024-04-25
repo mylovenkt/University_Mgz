@@ -1,0 +1,108 @@
+<%- include('homeLayouts/header.ejs') %>
+<div class="container pt-4 my-5">
+    <div class="row ">
+        <h2>Add Blog</h2>
+        <% if (message) { %>
+            <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong><%= message.message %></strong>
+            </div>
+        <% } %>
+        <% if(user && academy) { %>
+        <form action="/uploadBlog/<%= academy.id %>"  method="POST" enctype="multipart/form-data">
+            <div class="row mt-3">
+                <div class="col">
+                    <input type="text" class="form-control" id="title" name="titles" aria-label="Title" placeholder="Title" value="<%= formData ? formData.titles : '' %>" required>
+                </div>
+                <div class="col">
+                    
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <textarea id="content" name="content" rows="6" class="form-control" placeholder="Content..." value="<%= formData ? formData.titles : '' %>" required></textarea>
+                </div>
+                <div class="col">
+                    <div class="row mt-4">
+                        <input type="text" class="form-control" id="faculty" name="faculty" value="<%= user.faculty.name %>" readonly>
+                    </div>
+                    <div class="row mt-4">
+                        <input type="text" id="academy" class="form-control" name="academy" value="<%= academy.name %> (from <%= academy.startDate %> to <%= academy.endDate %>)" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="image">Background Image</label>
+                    <input type="file" class="form-control" id="imageInput" name="image" accept="image/*" required>
+                        <br>
+                        <img src="#" id="selectedImage" style="display: none; max-width: 200px; max-height: 200px;">
+                </div>
+                <div class="col">
+                    <label for="files">Upload Files</label>
+                    <input type="file" class="form-control" id="fileInput1" name="files" accept=".docx" multiple required>
+                    <br>
+                    <div id="fileDetails" style="display: none;">
+                        <p><strong>Name:</strong> <span id="fileName"></span></p>
+                        <p><strong>Type:</strong> <span id="fileType"></span></p>
+                        <img src="#" id="fileImage" style="max-width: 200px; max-height: 200px;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-check my-3 ">
+                <input class="form-check-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                <label class="form-check-label" for="flexCheckDefault">
+                    I agree to the terms and conditions
+                </label>
+            </div>
+            <div class="row">
+                <div class="col ">
+                    <div  class="d-grid gap-2 col-3 mx-auto">
+                        <button type="submit" class="btn btn-outline-primary">Create</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-grid gap-2 col-3 mx-auto">
+                        <button type="button" class="btn btn-outline-secondary"><a href="#" onclick="history.go(-1); return false;">
+                            Back
+                        </a></button>
+                    </div >
+                </div>
+            </div>
+            
+            
+            
+        </form>
+        <% } %>
+    </div>
+</div>
+   
+    
+<script>
+    function validateImage() {
+        var fileInput = document.getElementById('imageInput');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Chỉ được chọn các tệp hình ảnh có định dạng: .jpeg/.jpg/.png/.gif');
+            fileInput.value = '';
+            return false;
+        }
+        return true;
+    }
+
+    function validateFiles() {
+        var fileInput = document.getElementById('fileInput1');
+        var filePaths = fileInput.value.split(';');
+        var allowedExtensions = /(\.docx)$/i;
+        for (var i = 0; i < filePaths.length; i++) {
+            if (!allowedExtensions.exec(filePaths[i])) {
+                alert('Chỉ được chọn các tệp Word có định dạng: .doc/.docx');
+                fileInput.value = '';
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+<%- include('homeLayouts/footer.ejs') %>

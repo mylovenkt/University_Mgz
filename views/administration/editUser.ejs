@@ -1,0 +1,110 @@
+<%- include('adminLayouts/head.ejs')  %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                  <i class="mdi mdi-home"></i>
+                </span> <%= title %>
+              </h3>
+              <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <% if (message) { %>
+                            <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <strong><%= message.message %></strong>
+                            </div>
+                        <% } %>
+                        <form class="forms-sample" action="/update/<%= user._id %>" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                              <label for="name">Name</label>
+                              <input class="form-control" type="text" id="username" name="username" value="<%= user.username %>" required placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                              <label for="email">Email address</label>
+                              <input class="form-control" type="email" id="email" name="email" value="<%= user.email %>" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="password">Password</label>
+                              <input type="password" class="form-control" id="password" name="new_password" placeholder="New Password">
+                            </div>
+                            <% if(user.role !== 'manager') { %>
+                            <div class="form-group">
+                              <label for="selectRole">Faculties</label>
+                              <select class="form-control" id="faculty" name="faculty">
+                                <% faculties.forEach(faculty => { %>
+                                  <option value="<%= faculty._id %>" <% if (faculty._id.toString() === user.faculty._id.toString()) { %> selected <% } %> ><%= faculty.name %></option>
+                                <% }); %>
+                              </select>
+                          </div>
+                          <% } %>
+                            <div class="form-group">
+                              <label for="exampleSelectGender"> Gender </label>
+                              <div class="form-check">
+                                <input type="radio" id="male" class="form-check-input" name="gender" value="male" <% if (user.gender === 'male') { %> checked  <% } %> >
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="female" class="form-check-input" name="gender" value="female" <% if (user.gender === 'female') { %> checked <% } %> >
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                            
+                          </div>
+                            <div class="form-group">
+                              <label>Select Image</label>
+                              <input type="file" name="image" id="imageInput" class="form-control">
+
+                              <img src="/<%= user.image %>" class="img-thumbnail mt-1" style="max-width: 200px; max-height: 200px;" id="old_image">
+                              <input type="hidden" name="old_image" value="<%= user.image %>">
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputCity1">City</label>
+                              <input type="text" class="form-control" id="city" name="city" value="<%= user.city %>" placeholder="Location">
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="number" class="form-control" id="phoneNumber" value="<%= user.phoneNumber %>" name="phoneNumber" placeholder="Phone Number">
+                              </div>
+                            <div class="form-group">
+                                <label for="selectRole">Role</label>
+                                <select class="form-control" id="role" name="role">
+                                  <% roles.forEach(role => { %>
+                                    <option value="<%= role %>" <% if (role === user.role) { %> selected <% } %> ><%= role.charAt(0).toUpperCase() + role.slice(1) %></option>
+                                  <% }); %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-gradient-primary me-2">Update</button>
+                          </form>
+                    </div>
+                </div>
+                
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid d-flex justify-content-between">
+              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
+              <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <script>
+          document.getElementById("cancelButton").addEventListener("click", function() {
+              window.history.back();
+          });
+      </script>
+        <!-- main-panel ends -->
+<%- include('adminLayouts/foot.ejs')  %>

@@ -1,0 +1,48 @@
+<%- include('adminLayouts/head.ejs')  %>
+
+<div class="form-group">
+    <h1>Add Terms and Conditions</h1>
+    <form action="/addTerms" method="POST">
+        <label for="content">Terms and Conditions:</label><br>
+        <textarea id="termContent" name="termContent" rows="5" cols="50"></textarea><br>
+        <button type="submit">Add Terms and Conditions</button>
+    </form>
+    <% if (message) { %>
+        <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <strong><%= message.message %></strong>
+        </div>
+    <% } %>
+    
+    <div class="table-responsive justify-content-center my-4">
+        <% if (terms != " ") { %>
+            <table id="mytable"  class="table table-hover my-4">
+                <thead>
+                    <tr class="table-dark text-center justify-content-center">
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Content</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% terms.forEach((row, index) => { %>
+                        <tr class="align-items-center">
+                            <td class="text-center"><%= index %></td>
+                            <td class="text-center"><%= row.content  %></td>
+                            <td class="text-center">
+                                <a href="/editTerms/<%= row.id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                <a href="/deleteTerm/<%= row._id %>" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <h1 class="text-center text-secondary mt-5">No Terms Found In The Database!</h1>
+        <% } %>
+    </div>
+</div>
+
+    
+
+<%- include('adminLayouts/foot.ejs')  %>

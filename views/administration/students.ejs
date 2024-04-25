@@ -1,0 +1,93 @@
+<%- include('adminLayouts/head')  %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                  <i class="mdi mdi-home"></i>
+                </span> <%= title %>
+              </h3>
+              <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"><%= title %></h4>
+                            <% if (message) { %>
+                                <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <strong><%= message.message %></strong>
+                                </div>
+                            <% } %>
+                            <div class="table-responsive justify-content-center">
+                                <% if (users != " ") { %>
+                                    <table id="mytable"  class="table table-striped my-4">
+                                        <thead>
+                                            <tr class="table-dark text-center justify-content-center">
+                                                <th class="text-center">Id</th>
+                                                <th class="text-center">Avatar</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center">Faculty</th>
+                                                <th class="text-center">Gender</th>
+                                                <th class="text-center">Phone</th>
+                                                <th class="text-center">City</th>
+                                                <th class="text-center">Role</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% users.forEach((row, index) => { %>
+                                                <tr class="align-items-center">
+                                                    <td class="text-center"><%= index %></td>
+                                                    <td class="text-center"><img src="<%= row.image %>" width="50" class="img-thumbnail"></td>
+                                                    <td class="text-center"><%= row.username  %></td>
+                                                    <td class="text-center"><%= row.email %></td>
+                                                    <td class="text-center"><% if (row.faculty) { %>
+                                                      <%= row.faculty.name %>
+                                                  <% } %></td>
+                                                    <td class="text-center"><%= row.gender %></td>
+                                                    <td class="text-center"><%= row.phoneNumber %></td>
+                                                    <td class="text-center"><%= row.city %></td>
+                                                    <td class="text-center"><%= row.role  %></td>
+                                                    <td class="text-center">
+                                                        <a href="/edit/<%= row.id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                                        <a href="/delete/<%= row._id %>" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <h1 class="text-center text-secondary mt-5">No Student Found In The Database!</h1>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid d-flex justify-content-between">
+              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
+              <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+<%- include('adminLayouts/foot')  %>

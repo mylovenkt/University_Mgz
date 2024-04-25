@@ -1,0 +1,51 @@
+<%- include("adminLayouts/head.ejs") %>
+<style>
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    label, input {
+        display: block;
+        margin-bottom: 10px;
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+<div class="container layout_padding2-top">
+    <h2 class="fst-italic">Add New Academy</h2>
+    <% if (message) { %>
+        <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <strong><%= message.message %></strong>
+        </div>
+    <% } %>
+    <form action="/addAcademy" method="Post">
+        <label>Name:</label>
+        <input type="text" id="name" class="form-control" name="name" required>
+    
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+    
+        <label for="startDate">Start Date:</label>
+        <input class="form-control" type="date" id="startDate" name="startDate" required>
+    
+        <label for="endDate">End Date:</label>
+        <input class="form-control" type="date" id="endDate" name="endDate" required>
+    
+        <input class="btn btn-outline-info mt-2" type="submit" value="Add Academy">
+    </form>
+
+    
+    
+</div>
+
+
+<%- include("adminLayouts/foot.ejs") %>

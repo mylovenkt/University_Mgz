@@ -1,0 +1,78 @@
+<%- include("adminLayouts/head.ejs") %>
+<style>
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    label, input {
+        display: block;
+        margin-bottom: 10px;
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+<div>
+    
+</div>
+<div class="container layout_padding2-top">
+    <% if (message) { %>
+        <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <strong><%= message.message %></strong>
+        </div>
+    <% } %>
+    <div class="row">
+        <a href="/addAcademy">
+            <button class="btn btn-outline-info">Add New Academy</button>
+        </a>    
+    </div>
+    <div class="row">
+        <div class="table-responsive justify-content-center my-4">
+            <% if (academy != " ") { %>
+                <table id="mytable"  class="table table-hover my-4">
+                    <thead>
+                        <tr class="table-dark text-center justify-content-center">
+                            <th class="text-center">Id</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Descriptions</th>
+                            <th class="text-center">Start Date</th>
+                            <th class="text-center">End Date</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% academy.forEach((row, index) => { %>
+                            <tr class="align-items-center">
+                                <td class="text-center"><%= index %></td>
+                                <td class="text-center"><%= row.name  %></td>
+                                <td class="text-center"><%= row.description  %></td>
+                                <td class="text-center"><%= row.startDate %></td>
+                                <td class="text-center"><%= row.endDate %></td>
+                                <td class="text-center"><%= row.status %></td>
+                                <td class="text-center">
+                                    <a href="/editAcademy/<%= row.id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    <a href="/deleteAcademy/<%= row._id %>" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <h1 class="text-center text-secondary mt-5">No Academy Found In The Database!</h1>
+            <% } %>
+        </div>
+    </div>
+    
+</div>
+
+
+<%- include("adminLayouts/foot.ejs") %>

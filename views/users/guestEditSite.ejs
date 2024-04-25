@@ -1,0 +1,94 @@
+<%- include('homeLayouts/header.ejs') %>
+<div class="container">
+    
+    <div class="row my-5">
+        <% if (message) { %>
+            <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong><%= message.message %></strong>
+            </div>
+          <% } %>
+        <div class="col">
+            <h2><%= title %></h2>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <% if(users) { %>
+       <form action="/updatedGuest/<%= users.id  %>"  method="POST" >
+        <div class="row">
+            <div class="col">
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" value="<%= users.email  %>"> 
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" name="new_password" placeholder="New Password">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Name" value="<%= users.username  %>" >
+            </div>
+            <div class="col">
+                <input type="number" class="form-control" name="phonenumber" id="phonenumber" value="<%= users.phoneNumber  %>" placeholder="Phone Number">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <div class="d-flex flex-row">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="female" <% if(users.gender === 'female') { %> checked <% } %>>
+                        <label class="form-check-label" for="female">
+                          Female
+                        </label>
+                      </div>
+                      <div class="form-check ml-4">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="male"  <% if(users.gender === 'male') { %> checked <% } %>>
+                        <label class="form-check-label" for="male">
+                          Male
+                        </label>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <label>Select Image</label>
+                <input type="file" name="image" id="imageInput" class="form-control">
+                <img src="/<%= users.image %>" class="img-thumbnail mt-1" style="max-width: 200px; max-height: 200px;" id="old_image">
+                <input type="hidden" name="old_image" value="<%= users.image %>">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <label for="exampleInputCity1">City</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%= users.city %>" placeholder="Location">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <h3>Choose Contributions for Guest</h3>
+            <div style="max-height: 300px; overflow-y: scroll;">
+                <% blogs.forEach(blog => { %>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="selectedBlogs" value="<%= blog._id %>" <% if(selectedBlogs.includes(blog.id)) { %> checked <% } %>>
+                        <label class="form-check-label" for="selectedBlogs">
+                            <%= blog.title %>
+                        </label>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+        
+        <div class="row my-4">
+            <div class="col">
+                <button type="submit" class="btn btn-outline-success " >Update Guest Account</button>
+                <a href="/listGuest">
+                    <button type="button" class="btn btn-outline-secondary" >Cancel</button>
+                </a>
+            </div>
+        </div>
+       </form>
+       <% } %>
+    </div>
+</div>
+
+<%- include('homeLayouts/footer.ejs') %>

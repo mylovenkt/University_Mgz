@@ -1,0 +1,369 @@
+<%- include('homeLayouts/header.ejs') %>
+
+
+  <% if (message) { %>
+    <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+      <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>
+        <%= message.message %>
+      </strong>
+    </div>
+  <% } %>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col col-md-4">
+        <div class="blog-card">
+            <div class="row px-3 mt-2 mb-3">
+
+              <% if(faculty && !selectedAcademy) { %>
+                <div class="row px-3 mt-2">
+                  <h3>Faculty</h3>
+                  <div class="row">
+                    <div class="row">
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="faculty"
+                        onchange="location = this.value">
+                        <option value="">Select Faculty</option>
+                        <% faculty.forEach(function(opts) { %>
+                          <option value="/selectFaculty/<%= opts._id %>">
+                            <%= opts.name %>
+                          </option>
+                          <% }); %>
+                      </select>
+                    </div>
+                    <div class="col">
+                      <p>name:</p>
+                    </div>
+                    <div class="col">
+                      <% if(selectedFaculty) { %>
+                        <%= selectedFaculty.name %>
+                      <% } %>
+                    </div>
+                  </div>
+
+                </div>
+                <% } else if(faculty && selectedAcademy) { %>
+                  <div class="row px-3 mt-2">
+                    <h3>Faculty</h3>
+                    <div class="row">
+                      <div class="row">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="faculty"
+                          onchange="location = this.value">
+                          <option value="">Select Faculty</option>
+                          <% faculty.forEach(function(opts) { %>
+                            <option value="/selectFaculty/<%= opts._id %>/<%= academyId %>">
+                              <%= opts.name %>
+                            </option>
+                            <% }); %>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <p>name:</p>
+                      </div>
+                      <div class="col">
+                        <% if(selectedFaculty) { %>
+                          <%= selectedFaculty.name %>
+                        <% } %>
+                      </div>
+                    </div>
+  
+                  </div>
+                <% } %>
+
+                <% if(academy && selectedFaculty) { %>
+                <h3>Academy</h3>
+                <div class="row mt-3">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="academy"
+                      onchange="location = this.value">
+                      <option value="">Select Academy</option>
+                      <% academy.forEach(function(opts) { %>
+                        <option value="/selectFaculty/<%= facultyId %>/listUserBlog/<%= opts._id %>">
+                          <%= opts.name %>
+                        </option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Name:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.name %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Description:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.description %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Start Date:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.startDate %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      End Date:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.endDate %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                        <!--  -->
+                    </div>
+                </div>
+                <% } else if(academy) { %>
+                  <h3>Academy</h3>
+                <div class="row mt-3">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="academy"
+                      onchange="location = this.value">
+                      <option value="">Select Academy</option>
+                      <% academy.forEach(function(opts) { %>
+                        <option value="/selectedAcademy/<%= opts._id %>">
+                          <%= opts.name %>
+                        </option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Name:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.name %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Description:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.description %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      Start Date:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.startDate %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col col-lg-3 ">
+                      End Date:
+                    </div>
+                    <div class="col col-lg-4 ">
+                        <% if (selectedAcademy) { %>
+                            <span>
+                              <%= selectedAcademy.endDate %>
+                            </span>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                        <!--  -->
+                    </div>
+                </div>
+                <% }  %>
+
+                <div class="row mt-3">
+                    <div  class="d-grid gap-2 col-3 mx-auto">
+                        <a href="#" onclick="history.go(-1); return false;">
+                            <button type="button" class="btn btn-outline-secondary">Back</button>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+        <div class="row">
+            <% if(selectedAcademy && selectedFaculty && (user.role === 'manager')) { %>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      <% if(statuses) { %>
+                        <% if(statuses === 'publish') { %>
+                            Publish
+                        <% } else if(statuses === 'pending') { %>
+                            Pending
+                        <% } else if(statuses === 'rejected') { %>
+                            Rejected
+                        <% } else { %>
+                            Choose Status
+                        <% } %>
+                    <% } %>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="/filterBlog/<%= facultyId %>/<%= selectedAcademy.id %>?status=publish">Public</a></li> 
+                        <li><a class="dropdown-item" href="/filterBlog/<%= facultyId %>/<%= selectedAcademy.id %>?status=pending">Pending</a></li>
+                        <li><a class="dropdown-item" href="/filterBlog/<%= facultyId %>/<%= selectedAcademy.id %>?status=rejected">Rejected</a></li>
+                    </ul>
+                </div>
+            <% } else if(user.role === 'manager' && !selectedAcademy && !selectedFaculty) { %>
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <% if(statuses) { %>
+                    <% if(statuses === 'publish') { %>
+                        Publish
+                    <% } else if(statuses === 'pending') { %>
+                        Pending
+                    <% } else if(statuses === 'rejected') { %>
+                        Rejected
+                    <% } else { %>
+                        Choose Status
+                    <% } %>
+                <% } %>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/selectStatus?status=publish">Public</a></li> 
+                    <li><a class="dropdown-item" href="/selectStatus?status=pending">Pending</a></li>
+                    <li><a class="dropdown-item" href="/selectStatus?status=rejected">Rejected</a></li>
+                </ul>
+            </div>
+            <% } else if(selectedFaculty && (user.role === 'manager')) { %>
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <% if(statuses) { %>
+                    <% if(statuses === 'publish') { %>
+                        Publish
+                    <% } else if(statuses === 'pending') { %>
+                        Pending
+                    <% } else if(statuses === 'rejected') { %>
+                        Rejected
+                    <% } else { %>
+                        Choose Status
+                    <% } %>
+                <% } %>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/filterBlogFaculty/<%= selectedFaculty.id %>?status=publish">Public</a></li> 
+                    <li><a class="dropdown-item" href="/filterBlogFaculty/<%= selectedFaculty.id %>?status=pending">Pending</a></li>
+                    <li><a class="dropdown-item" href="/filterBlogFaculty/<%= selectedFaculty.id %>?status=rejected">Rejected</a></li>
+                </ul>
+            </div>
+            <% } else if(selectedAcademy && user.role === 'manager') { %>
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <% if(statuses) { %>
+                    <% if(statuses === 'publish') { %>
+                        Publish
+                    <% } else if(statuses === 'pending') { %>
+                        Pending
+                    <% } else if(statuses === 'rejected') { %>
+                        Rejected
+                    <% } else { %>
+                        Choose Status
+                    <% } %>
+                <% } %>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/filterBlogAcademy/<%= selectedAcademy.id %>?status=publish">Public</a></li> 
+                    <li><a class="dropdown-item" href="/filterBlogAcademy/<%= selectedAcademy.id %>?status=pending">Pending</a></li>
+                    <li><a class="dropdown-item" href="/filterBlogAcademy/<%= selectedAcademy.id %>?status=rejected">Rejected</a></li>
+                </ul>
+            </div>
+            <% } %>
+        </div>
+
+        <% if(blogs && blogs.length > 0) { %>
+            <% blogs.forEach(blog => { %>
+                <div class="card my-4">
+                    <div class="position-relative card-body" style="width: auto; height: 250px; overflow: hidden;">
+                        <img src="/<%= blog.backgroundImage %>" style="object-fit: cover; width: 100%; height: 100%;" class="card-img-top img-fluid" alt="<%= blog.backgroundImage %>" >
+                        
+                    </div>
+                    <div style="position: absolute; top: 10px; right: 0;">
+                        <% if(blog.status === "pending") { %>
+                            <span class="badge square-pill bg-primary"><%= blog.status %></span>
+                        <% } else if(blog.status === 'publish') { %>
+                            <span class="badge square-pill bg-success"><%= blog.status %></span>
+                        <% } else if(blog.status === 'rejected') { %>
+                            <span class="badge square-pill bg-danger"><%= blog.status %></span>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="blog-card-title font-monospace fw-bold fs-3"><%= blog.title %></h2>
+                        <div class="blog-card-info">
+                            <span class="blog-card-last-update"> <%= blog.content %></span>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Faculty: <%= blog.faculty.name %></span>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                          <span class="font-monospace">Academy: <%= blog.academy.name %></span>
+                      </li>
+                  </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Create by: <%= blog.user.username %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/<%= blog.user.image %>" class="rounded-circle img-thumbnail" width="56" alt="">
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush ">
+                        <li class="list-group-item" style="position: absolute; bottom: 10px; right: 10px;">
+                            <a href="/blogDetails/<%= blog.id %>">
+                                <button type="button" class="btn btn-outline-primary">Read more</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No blogs found.</p>
+        <% } %>
+        </div>  
+</div>
+</div>
+  
+
+
+
+
+
+<%- include('homeLayouts/footer.ejs') %>

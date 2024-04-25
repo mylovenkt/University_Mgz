@@ -1,0 +1,225 @@
+<%- include('homeLayouts/header.ejs') %>
+
+
+<% if(blog) { 
+    const createdAtDate = new Date(blog.createdAt);
+    const formattedCreatedAt = createdAtDate.toLocaleString('vi-VN', {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false 
+    });    
+%>
+    <div class="row mt-4">
+        <div class="col col-md-4">
+            <div class="container my-4">
+                <div class="blog-card">
+                    <div class="row px-3 mt-2">
+                        <h3>Faculty</h3>
+                        <div class="row mt-2">
+                          <div class="col col-lg-3">
+                            Name:
+                          </div>
+                          <div class="col col-lg-4 ">
+                            <%= blog.faculty.name %>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row px-3 mt-2 mb-3">
+                        <h3>Academy</h3>
+                        <div class="row mt-3">
+                            <div class="col col-lg-3 ">
+                              Name:
+                            </div>
+                            <div class="col col-lg-4 ">
+                                <%= blog.academy.name %>
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col col-lg-3 ">
+                              Description:
+                            </div>
+                            <div class="col col-lg-4 ">
+                                <%= blog.academy.description %>
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col col-lg-3 ">
+                              Start Date:
+                            </div>
+                            <div class="col col-lg-4 ">
+                                <%= blog.academy.startDate %>
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col col-lg-3 ">
+                              End Date:
+                            </div>
+                            <div class="col col-lg-4 ">
+                                <%= blog.academy.endDate %>
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="d-flex justify-content-center">
+                                <% if(blog.academy.status === "Active") { %>
+                                    <span class="badge square-pill bg-success p-2"><%= blog.academy.status %></span>
+                                <% } else if(blog.status === 'Unactive') { %>
+                                    <span class="badge square-pill bg-danger p-2"><%= blog.academy.status %></span>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div  class="d-grid gap-2 col-3 mx-auto">
+                                <a href="#" onclick="history.go(-1); return false;">
+                                    <button type="button" class="btn btn-outline-secondary">Back</button>
+                                </a>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="col-md-8">
+            <div class="container mt-3">
+                <div class="card mb-3" style="width: 50rem;">
+                    <div class="position-relative card-body" style="width: auto; height: 250px; overflow: hidden;">
+                        <img src="/<%= blog.backgroundImage %>" alt="<%= blog.backgroundImage %>" style="object-fit: cover; width: 100%; height: 100%;" class="card-img-top img-fluid">
+                        
+                    </div>
+                    <div style="position: absolute; top: 10px; right: 0;">
+                        <% if(blog.status === "pending") { %>
+                            <span class="badge square-pill bg-primary"><%= blog.status %></span>
+                        <% } else if(blog.status === 'publish') { %>
+                            <span class="badge square-pill bg-success"><%= blog.status %></span>
+                        <% } else if(blog.status === 'rejected') { %>
+                            <span class="badge square-pill bg-danger"><%= blog.status %></span>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="blog-card-title font-monospace text-capitalize fw-bold fs-3 "><%= blog.title %>  
+                            <% if(user.role === 'student' && user._id.toString() === blog.user._id.toString() && blog.status === 'pending') { %>
+                                <span><a href="/editBlog/<%= blog.id %>"><i class="fa-solid fa-pen-to-square"></i></a></span>
+                            <% } %>
+    
+                        </h2>
+                        <div class="blog-card-info">
+                            <span class="blog-card-last-update"> <%= blog.content %></span>     
+                            <span class="blog-card-last-update fs-6">Created at: <%= formattedCreatedAt %></span>
+                            
+                        </div>
+                        
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="file-list">
+                            <p class="fw-bold">Uploaded Files</p>
+                            <% files.forEach(file => { %>
+                                <div class="file-item">
+                                    <span class="file-name fs-4"><%= file.filename %></span>
+                                    <% if(user.role !== 'guest') { %>
+                                    <a href="/download/<%= file._id %>" class="file-download-link"><i class="fa-solid fa-circle-down"></i></a>
+                                    <% } %>
+                                    <div class="ratio ratio-16x9 mt-3 border">
+                                        <iframe src="/viewFile/<%= file._id %>" width="100%" height="400px"></iframe>
+                                    </div>
+                                    
+                                </div>
+                            <% }); %>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="blog-card-user">Create by: <%= blog.user.username %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/<%= blog.user.image %>" class="rounded-circle img-thumbnail" width="56" alt="">
+                        </li>
+                    </ul>
+                    <% if(blog.status === 'pending' && user.role !== 'manager' && user.role !== 'guest') { %>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <h5 style="color: #adb5bd;">Comments</h5>
+                        </li>
+                    </ul>
+                    
+                    <div class="card-body px-3 mb-3 align-middle">
+                        
+                        
+                        <form action="/addComment/<%= blog.id %>" method="Post"> 
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" name="content" placeholder="Leave a comment here" id="content" style="height: 100px" required></textarea>
+                                        <label for="floatingTextarea2">Comments</label>
+                                      </div>
+                                </div>
+                                <div class="col-auto ">
+                                    <button type="submit"class="btn btn-outline-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                            
+                            <% if (message) { %>
+                                <br>
+                                <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <strong><%= message.message %></strong>
+                                </div>
+                            <% } %>
+                        </form>
+                        <% if(comments.length === 0) { 
+                            const createdAtDate = new Date(comments.createdAt);
+                            // Format ngày tháng năm và giờ
+                            const formattedCreatedAt = createdAtDate.toLocaleString('vi-VN', {
+                            day: 'numeric',
+                            month: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: false // Sử dụng định dạng 24 giờ
+                            });    
+                        %>
+                            <p>No comments yet.</p>
+                        <% } else { %>
+                            <% comments.forEach(comment => { %>
+                                <div class="row mt-3">
+                                    <div class="col-auto"> 
+                                        <img src="/<%= comment.user.image %>" alt="<%= comment.user.image %>" width="50" class="img-thumbnail">
+                                    </div>
+                                    <div class="col"> 
+                                        <div class="p-3 mb-2 bg-light text-dark">
+                                            <div class="comment">
+                                                <p class="fw-bold"><%= comment.user.username %></p>
+                                                <p><%= comment.content %></p>
+                                                <span class="blog-card-last-update fs-6">Created at: <%= formattedCreatedAt %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                            <% }); %>
+                        <% } %>
+                        
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+<% } %>
+
+
+  
+
+
+
+
+<%- include('homeLayouts/footer.ejs') %>

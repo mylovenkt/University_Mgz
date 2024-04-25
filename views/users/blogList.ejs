@@ -1,0 +1,139 @@
+
+<div class="row" >
+    <% if(selectedAcademy && user.role !== 'student' && user.role !== 'guest') { %>
+        <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <% if(statuses) { %>
+                    <% if(statuses === 'publish') { %>
+                        Publish
+                    <% } else if(statuses === 'pending') { %>
+                        Pending
+                    <% } else if(statuses === 'rejected') { %>
+                        Rejected
+                    <% } else { %>
+                        Choose Status
+                    <% } %>
+                <% } %>
+                    
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/byStatus/<%= selectedAcademy.id %>?status=publish">Public</a></li> 
+                <li><a class="dropdown-item" href="/byStatus/<%= selectedAcademy.id %>?status=pending">Pending</a></li>
+                <li><a class="dropdown-item" href="/byStatus/<%= selectedAcademy.id %>?status=rejected">Rejected</a></li>
+            </ul>
+        </div>
+    <% } else if(user.role === 'coordinator') { %>
+        <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <% if(statuses) { %>
+                    <% if(statuses === 'publish') { %>
+                        Publish
+                    <% } else if(statuses === 'pending') { %>
+                        Pending
+                    <% } else if(statuses === 'rejected') { %>
+                        Rejected
+                    <% } else { %>
+                        Choose Status
+                    <% } %>
+                <% } %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/byStatus?status=publish">Public</a></li> 
+                <li><a class="dropdown-item" href="/byStatus?status=pending">Pending</a></li>
+                <li><a class="dropdown-item" href="/byStatus?status=rejected">Rejected</a></li>
+            </ul>
+        </div>
+    <% } %>
+        
+
+    <div>
+        <% if(blogs && blogs.length > 0) { %>
+            <% 
+                blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                blogs.forEach(blog => { 
+                    const createdAtDate = new Date(blog.createdAt);
+                            // Format ngày tháng năm và giờ
+                            const formattedCreatedAt = createdAtDate.toLocaleString('vi-VN', {
+                            day: 'numeric',
+                            month: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: false // Sử dụng định dạng 24 giờ
+                    });  
+            %>
+                <div class="card my-4">
+                    <div class="position-relative card-body" style="width: auto; height: 250px; overflow: hidden;">
+                        <img src="/<%= blog.backgroundImage %>" style="object-fit: cover; width: 100%; height: 100%;" class="card-img-top img-fluid" alt="<%= blog.backgroundImage %>">
+                        
+                    </div>
+                    <div style="position: absolute; top: 10px; right: 0;">
+                        <% if(blog.status === "pending") { %>
+                            <span class="badge square-pill bg-primary"><%= blog.status %></span>
+                        <% } else if(blog.status === 'publish') { %>
+                            <span class="badge square-pill bg-success"><%= blog.status %></span>
+                        <% } else if(blog.status === 'rejected') { %>
+                            <span class="badge square-pill bg-danger"><%= blog.status %></span>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="blog-card-title"><%= blog.title %></h2>
+                        <div class="blog-card-info">
+                            <span class="blog-card-last-update"> <%= blog.content %></span>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Create at: <%= formattedCreatedAt %></span>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Faculty: <%= blog.faculty.name %></span>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Academy: <%= blog.academy.name %></span>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span class="font-monospace">Create by: <%= blog.user.username %></span>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/<%= blog.user.image %>" class="rounded-circle img-thumbnail" width="56" alt="">
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush ">
+                        <li class="list-group-item" style="position: absolute; bottom: 10px; right: 10px;">
+                            <a href="/blogDetails/<%= blog.id %>">
+                                <button type="button" class="btn btn-outline-primary">Read more</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <% if(blog.status === "pending") { %>
+                    <a href="/changeStatus/<%= blog.id %>?status=publish">
+                        <button type="button" class="btn btn-outline-success">approve</button>
+                    </a>
+                    <a href="/changeStatus/<%= blog.id %>?status=rejected">
+                        <button type="button" class="btn btn-outline-danger">reject</button>
+                    </a>
+                <% } %>
+            <% }); %>
+        <% } else { %>
+            <p>No blogs found.</p>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    // JavaScript function to update the status text in the dropdown
+    function updateStatus(status) {
+        document.getElementById('statusText').innerText = status.charAt(0).toUpperCase() + status.slice(1);
+        // Here you can add further logic to perform actions based on the selected status
+        // For example, you can make an AJAX request to update the status on the server
+    }
+</script>
+

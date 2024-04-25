@@ -1,0 +1,60 @@
+<%- include('adminLayouts/head')  %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                  <i class="mdi mdi-home"></i>
+                </span> <%= title %>
+              </h3>
+              <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="col grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Bar chart</h4>
+                  <canvas id="myChart" width="400" height="auto"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid d-flex justify-content-between">
+              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block"></span>
+              <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"></span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        
+        <script>
+          // document.addEventListener('DOMContentLoaded', function () {
+          //     // Lấy tham số chartConfig từ server-side render
+          //     const chartConfig = JSON.parse(`<%- JSON.stringify(chartConfig) %>`);
+              
+          //     // Vẽ biểu đồ bằng Chart.js
+          //     const ctx = document.getElementById('myChart1').getContext('2d');
+          //     new Chart(ctx, chartConfig);
+          // });
+
+          document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tham số chartConfig từ server-side render
+        const chartConfig = JSON.parse(`<%- JSON.stringify(chartConfig) %>`);
+        
+        // Vẽ biểu đồ bằng Chart.js
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, chartConfig);
+    });
+      </script>
+
+<%- include('adminLayouts/foot')  %>
