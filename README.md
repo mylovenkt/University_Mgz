@@ -46,7 +46,7 @@ manager@gmail.com
 ## How To Use
 ```bash
 # Clone this repository
-$ git clone https://github.com/mylovenkt/University-Mgz
+$ git clone https://github.com/mylovenkt/University_Mgz
 
 # Go into the repository
 $ cd University-Mgz
