@@ -49,7 +49,7 @@ manager@gmail.com
 $ git clone https://github.com/mylovenkt/University_Mgz
 
 # Go into the repository
-$ cd University-Mgz
+$ cd University_Mgz
 
 # Install dependencies
 $ npm install
